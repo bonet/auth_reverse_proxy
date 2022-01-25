@@ -1,0 +1,33 @@
+
+# ==================================== BASE ====================================
+ARG INSTALL_PYTHON_VERSION=${INSTALL_PYTHON_VERSION:-3.7}
+FROM python:${INSTALL_PYTHON_VERSION}-slim-buster AS base
+
+RUN apt-get update
+RUN apt-get install -y \
+    curl \
+    gcc
+
+WORKDIR /app
+
+COPY . .
+
+RUN useradd -m bonet
+RUN chown -R bonet:bonet /app
+USER bonet
+
+ENV PATH="/home/bonet/.local/bin:${PATH}"
+ENV FLASK_ENV=${FLASK_ENV}
+ENV DATABASE_URL=${DATABASE_URL}
+ENV FLASK_APP=${FLASK_APP}
+ENV URL_HOST=${URL_HOST}
+
+# ================================= DEVELOPMENT ================================
+FROM base AS development
+
+RUN pip install --user -r requirements.txt
+EXPOSE 5000
+ENV SEND_FILE_MAX_AGE_DEFAULT=0
+ENV PAGINATION_NUMERIC_DISPLAY_COUNT=5
+RUN pwd
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0", "--port=5000" ]

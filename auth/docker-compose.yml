@@ -1,0 +1,61 @@
+version: '3.7'
+
+x-build-args: &build_args
+  INSTALL_PYTHON_VERSION: 3.7
+  INSTALL_NODE_VERSION: 12
+
+x-default-volumes: &default_volumes
+  volumes:
+    - ./:/app
+
+services:
+  auth-dev:
+    build:
+      context: .
+      target: development
+      args:
+        <<: *build_args
+    image: auth:dev
+    container_name: auth-dev
+    ports:
+      - 127.0.0.1:80:5000/tcp
+      - 4444:4444 # for debugging
+    <<: *default_volumes
+    env_file:
+      - environments/env_dev.txt
+    stdin_open: true # for debugging
+    tty: true # for debugging
+
+  oauth2-token-db-dev:
+    image: postgres:10
+    container_name: oauth2-token-db-dev
+    ports:
+      - 5432:5432
+    volumes:
+      - ./oauth2-token-db-dev.postgresdb:/var/lib/postgresql/data
+    env_file:
+      - environments/env_dev_db.txt
+
+  oauth2-token-db-test:
+    image: postgres:10
+    container_name: oauth2-token-db-test
+    ports:
+      - 5433:5432
+    volumes:
+      - ./oauth2-token-db-test.postgresdb:/var/lib/postgresql/data
+    env_file:
+      - environments/env_test_db.txt
+
+  manage:
+    build:
+      context: .
+      target: manage
+    environment:
+      FLASK_ENV: production
+      FLASK_DEBUG: 0
+    image: sims-manage
+    stdin_open: true
+    tty: true
+
+volumes:
+  node-modules:
