@@ -3,9 +3,8 @@ import requests
 from libs import database
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-
-db = SQLAlchemy()
-migrate = Migrate()
+from user.models import User
+from libs.extensions import db, migrate
 
 app = Flask(__name__)
 app.config.from_object("config.settings")
