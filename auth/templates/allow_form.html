@@ -1,0 +1,26 @@
+<br>
+<form action="{{callback_url}}" method="post">
+  <p style="text-align: center;">Allow App to access your data?</p>
+  <input type="hidden" name="client_access_token" value="{{client_access_token}}" />
+  <input type="hidden" name="auth_code" value="{{auth_code}}" />
+  <input type="hidden" name="register_user" value="{{register_user}}" />
+  <input type="hidden" name="allow" value="1" />
+  <div style="text-align: center;">
+    <a href="" onclick="disallowAccess(this); return false;">No</a> &nbsp;&nbsp;&nbsp; <a href="" onclick="allowAccess(this); return false;">Yes</a>
+  </div>
+</form>
+
+<script>
+  function disallowAccess(self) {
+    event.preventDefault();
+    var frm = self.parentElement.parentElement
+    frm.elements["allow"].value="0";
+    frm.submit();
+  }
+
+  function allowAccess(self) {
+    event.preventDefault();
+    var frm = self.parentElement.parentElement
+    frm.submit();
+  }
+</script>

@@ -1,0 +1,17 @@
+<form action="/api/v1/auth" method="post">
+  <table style="width: 200px">
+    <tr>
+      <td>Email:</td>
+      <td><input type="text" name="email" /></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input type="text" name="password" /></td>
+    </tr>
+  </table>
+  <br>
+  <input type="hidden" name="partner_id" value="{{partner_id}}" />
+  <input type="hidden" name="client_access_token" value="{{client_access_token}}" />
+  <input type="hidden" name="callback_url" value="{{callback_url}}" />
+  <input type="submit" value="Login"/>
+</form>
