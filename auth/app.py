@@ -1,6 +1,17 @@
 from flask import Flask,request,redirect,Response
 import requests
+from libs import database
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+db = SQLAlchemy()
+migrate = Migrate()
+
 app = Flask(__name__)
+app.config.from_object("config.settings")
+db.init_app(app)
+migrate.init_app(app, db)
+
 print("HERE")
 SITE_NAME = 'http://0.0.0.0:5000'
 @app.route('/')

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Database module, including the SQLAlchemy database object and DB-related utilities."""
-from extensions import db
+from libs.extensions import db
 from sqlalchemy.orm import class_mapper, ColumnProperty
 from sqlalchemy.types import UserDefinedType
 
