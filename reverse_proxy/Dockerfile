@@ -9,7 +9,6 @@ RUN apt-get install -y \
     gcc
 
 WORKDIR /app
-COPY requirements requirements
 
 COPY . .
 

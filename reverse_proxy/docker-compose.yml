@@ -9,81 +9,19 @@ x-default-volumes: &default_volumes
     - ./:/app
 
 services:
-  auth-dev:
+  reverse-proxy-dev:
     build:
       context: .
       target: development
       args:
         <<: *build_args
-    image: auth:dev
-    container_name: auth-dev
+    image: reverse-proxy:dev
+    container_name: reverse-proxy-dev
     ports:
-      - 127.0.0.1:80:5000/tcp
-      - 4444:4444 # for debugging
+      - 127.0.0.1:81:5000/tcp
+      - 4445:4444 # for debugging
     <<: *default_volumes
     env_file:
-      - env_dev_auth.txt
+      - environments/env_dev.txt
     stdin_open: true # for debugging
     tty: true # for debugging
-
-  product-reverse-proxy-dev:
-    build:
-      context: .
-      target: development
-      args:
-        <<: *build_args
-    image: product-reverse-proxy:dev
-    container_name: product-reverse-proxy-dev
-    ports:
-      - 127.0.0.1:80:5000/tcp
-      - 4444:4444 # for debugging
-    <<: *default_volumes
-    env_file:
-      - env_dev_product-reverse-proxy.txt
-    stdin_open: true # for debugging
-    tty: true # for debugging
-
-
-  oauth2-token-db-dev:
-    image: postgres:10
-    container_name: oauth2-token-db-dev
-    ports:
-      - 5432:5432
-    volumes:
-      - ./oauth2-token-db-dev.postgresdb:/var/lib/postgresql/data
-    env_file:
-      - env_dev_oauth2-token-db-dev.txt
-
-  oauth2-token-db-test:
-    image: postgres:10
-    container_name: oauth2-token-db-test
-    ports:
-      - 5433:5432
-    volumes:
-      - ./oauth2-token-db-test.postgresdb:/var/lib/postgresql/data
-    env_file:
-      - env_dev_oauth2-token-db-test.txt
-
-  product-db-dev:
-    image: postgres:10
-    container_name: product-db-dev
-    ports:
-      - 5434:5432
-    volumes:
-      - ./product-db-dev.postgresdb:/var/lib/postgresql/data
-    env_file:
-      - env_dev_product-db-dev.txt
-
-  manage:
-    build:
-      context: .
-      target: manage
-    environment:
-      FLASK_ENV: production
-      FLASK_DEBUG: 0
-    image: sims-manage
-    stdin_open: true
-    tty: true
-
-volumes:
-  node-modules:
