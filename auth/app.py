@@ -1,7 +1,5 @@
 from flask import Flask, request, redirect, Response, render_template, jsonify, make_response
 from flask_login import login_required, login_user, logout_user, current_user
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 
 import requests, random, string
 from datetime import datetime as dt
@@ -60,7 +58,7 @@ def login():
                 user.address == None or
                 user.phone == None) else 0
 
-            return redirect(f"/form/v1/allow_form?auth_code={auth_code}&callback_url={callback_url}&client_access_token={client_access_token}&register_user={register_user}")
+            return redirect(f"/allow_form?auth_code={auth_code}&callback_url={callback_url}&client_access_token={client_access_token}&register_user={register_user}")
         else:
             return render_template("login_form.html",
                     callback_url=callback_url,
@@ -80,7 +78,7 @@ def login():
             )
 
 
-@app.route('/form/v1/allow_form',methods=['GET'])
+@app.route('/allow_form',methods=['GET'])
 def allow_form():
     callback_url=request.args.get('callback_url')
     client_access_token=request.args.get('client_access_token')
