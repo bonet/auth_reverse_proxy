@@ -18,8 +18,11 @@ class OAuth2Token(SurrogatePK, Model, OAuth2TokenMixin):
     __tablename__ = "oauth2_tokens"
     user_id = reference_col("users", nullable=False, column_kwargs={'index': True})
     user = relationship("User", back_populates="oauth2_token")
-    auth_code = Column(db.String(256), unique=False, nullable=True)
 
+    partner_id = reference_col("partners", nullable=False, column_kwargs={'index': True})
+    partner = relationship("Partner", back_populates="oauth2_token")
+
+    auth_code = Column(db.String(256), unique=False, nullable=True)
 
     def __init__(self, **kwargs):
         """Create instance."""
