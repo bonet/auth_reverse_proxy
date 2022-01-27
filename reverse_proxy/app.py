@@ -3,7 +3,7 @@ from flask import Flask, request, redirect, Response, render_template, jsonify, 
 
 import requests, random, string
 from datetime import datetime as dt
-import json
+import json, re
 
 from libs.extensions import db
 
@@ -27,14 +27,23 @@ def proxy(path):
     access_token = None
     auth_header = request.headers.get('Authorization')
 
+
+    path = re.sub(r'/\d+', '/<id>', request.path)
+    path_name = path if re.search("^\/api\/v1\/", path) else None
+
+    if path_name == None:
+        return make_response(jsonify({
+                'Status': 'Incorrect URL'
+            }), 404)
+
     if auth_header:
         auth_header_arr = auth_header.split()
-        access_token = auth_header_arr[-1]
+        if auth_header_arr[-1]:
+            access_token = auth_header_arr[-1]
+            token = OAuth2Token.find_by_access_token(db.session, access_token, user_id)
+            permitted = True if token and (request.method in token['scopes'].get(path_name)) else False
 
-    if access_token:
-        token = OAuth2Token.find_by_access_token(db.session, access_token, user_id)
-
-    if user_id and token:
+    if permitted:
         initial_headers = {
                 'UID': request.headers.get('UID'),
                 'Content-Type': request.headers.get('Content-Type'),

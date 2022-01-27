@@ -11,10 +11,9 @@ from libs.database import (
 
 
 class OAuth2Token():
-    def __init__(self, auth):
-        self.token = None
-
     @classmethod
     def find_by_access_token(self, session, access_token, user_id):
-        self.token = session.execute("SELECT * FROM oauth2_tokens")
+        res = session.execute(f"SELECT * FROM oauth2_tokens WHERE access_token='{access_token}' AND user_id='{user_id}'")
+        token = res.fetchone()
+        return token
 
