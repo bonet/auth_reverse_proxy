@@ -34,8 +34,27 @@ def upgrade():
 
     op.bulk_insert(partners_table,
     [
-        {'id':1, 'name': 'tokopedia', 'secret_key':'XYZ', 'scopes': '{}' },
-        {'id':2, 'name': 'shopee', 'secret_key':'QQQ', 'scopes': '{}' },
+        {   'id':1,
+            'name': 'tokopedia',
+            'secret_key':'XYZ',
+            'scopes':
+                {
+                    '/api/v1/lists': ['GET'],
+                    '/api/v1/detail/<id>': ['GET'],
+                    '/api/v1/add_to_cart': ['POST'],
+                    '/api/v1/cart/detail/<id>': ['GET'],
+                    '/api/v1/cart/checkout': ['POST']
+                }
+        },
+        {   'id':2,
+            'name': 'shopee',
+            'secret_key':'QQQ',
+            'scopes':
+                {
+                    '/api/v1/lists': ['GET'],
+                    '/api/v1/detail/<id>': ['GET']
+                }
+        },
     ])
 
 

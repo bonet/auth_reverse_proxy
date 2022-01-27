@@ -30,6 +30,7 @@ def upgrade():
     sa.Column('expires_in', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('auth_code', sa.String(length=256), nullable=True),
+    sa.Column('scopes', sa.JSON(), server_default='{}', nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('access_token')

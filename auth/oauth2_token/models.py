@@ -23,6 +23,7 @@ class OAuth2Token(SurrogatePK, Model, OAuth2TokenMixin):
     partner = relationship("Partner", back_populates="oauth2_token")
 
     auth_code = Column(db.String(256), unique=False, nullable=True)
+    scopes = Column(db.JSON, nullable=True, default='{}', server_default='{}')
 
     def __init__(self, **kwargs):
         """Create instance."""
