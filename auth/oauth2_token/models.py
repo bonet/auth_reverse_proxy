@@ -1,4 +1,5 @@
 import datetime as dt
+import random, string
 
 from libs.database import (
     Column,
@@ -27,5 +28,7 @@ class OAuth2Token(SurrogatePK, Model, OAuth2TokenMixin):
 
     def __init__(self, **kwargs):
         """Create instance."""
+        self.auth_code = ''.join(random.SystemRandom().choice(string.hexdigits) for _ in range(32))
+        self.access_token = ''.join(random.SystemRandom().choice(string.hexdigits) for _ in range(32))
         db.Model.__init__(self, **kwargs)
 

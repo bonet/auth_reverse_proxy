@@ -41,15 +41,11 @@ def login():
                 ).one_or_none()
 
         if(user and partner):
-            auth_code = ''.join(random.SystemRandom().choice(string.hexdigits) for _ in range(32))
-            access_token = ''.join(random.SystemRandom().choice(string.hexdigits) for _ in range(32))
             oauth2_token = OAuth2Token.query.filter(OAuth2Token.user_id == user.id).one_or_none()
 
             oauth2_token = oauth2_token or OAuth2Token()
             oauth2_token.user_id = user.id
             oauth2_token.partner_id = partner.id
-            oauth2_token.auth_code = auth_code
-            oauth2_token.access_token = access_token
             oauth2_token.issued_at = dt.utcnow().timestamp()
             oauth2_token.expires_in = 3600
             oauth2_token.scopes = partner.scopes
