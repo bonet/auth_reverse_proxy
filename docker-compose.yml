@@ -29,6 +29,8 @@ services:
   products-reverse-proxy-dev:
     volumes:
       - ./reverse_proxy:/app
+    networks:
+      - internal
     build:
       context: .
       dockerfile: Dockerfile_reverse_proxy
@@ -46,13 +48,15 @@ services:
     stdin_open: true # for debugging
     tty: true # for debugging
     environment:
-      - API_HOST=products-api-dev
+      - API_HOST=products-api-dev:5000
       - URL_HOST=0.0.0.0:1001
 
 
   orders-reverse-proxy-dev:
     volumes:
       - ./reverse_proxy:/app
+    networks:
+      - internal
     build:
       context: .
       dockerfile: Dockerfile_reverse_proxy
@@ -70,13 +74,15 @@ services:
     stdin_open: true # for debugging
     tty: true # for debugging
     environment:
-      - API_HOST=orders-api-dev
+      - API_HOST=orders-api-dev:5000
       - URL_HOST=0.0.0.0:1002
 
 
   products-api-dev:
     volumes:
       - ./api:/app
+    networks:
+      - internal
     build:
       context: .
       dockerfile: Dockerfile_api
@@ -94,12 +100,14 @@ services:
     stdin_open: true # for debugging
     tty: true # for debugging
     environment:
-      - URL_HOST=0.0.0.0:2001
+      - URL_HOST=products-api-dev:5000
 
 
   orders-api-dev:
     volumes:
       - ./api:/app
+    networks:
+      - internal
     build:
       context: .
       dockerfile: Dockerfile_api
@@ -122,6 +130,8 @@ services:
 
   oauth2-token-db-dev:
     image: postgres:10
+    networks:
+      - internal
     container_name: oauth2-token-db-dev
     restart: always
     ports:
@@ -134,6 +144,8 @@ services:
 
   oauth2-token-db-test:
     image: postgres:10
+    networks:
+      - internal
     container_name: oauth2-token-db-test
     restart: always
     ports:
@@ -143,3 +155,5 @@ services:
     env_file:
       - auth/environments/env_test_db.txt
 
+networks:
+  internal:
