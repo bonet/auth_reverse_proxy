@@ -9,23 +9,6 @@ x-default-volumes: &default_volumes
     - ./:/app
 
 services:
-  auth-dev:
-    build:
-      context: .
-      target: development
-      args:
-        <<: *build_args
-    image: auth:dev
-    container_name: auth-dev
-    ports:
-      - 127.0.0.1:80:5000/tcp
-      - 4444:4444 # for debugging
-    <<: *default_volumes
-    env_file:
-      - env_dev_auth.txt
-    stdin_open: true # for debugging
-    tty: true # for debugging
-
   product-reverse-proxy-dev:
     build:
       context: .
@@ -40,6 +23,7 @@ services:
     <<: *default_volumes
     env_file:
       - env_dev_product-reverse-proxy.txt
+    restart: always
     stdin_open: true # for debugging
     tty: true # for debugging
 

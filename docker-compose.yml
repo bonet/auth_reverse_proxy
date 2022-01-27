@@ -4,14 +4,13 @@ x-build-args: &build_args
   INSTALL_PYTHON_VERSION: 3.7
   INSTALL_NODE_VERSION: 12
 
-x-default-volumes: &default_volumes
-  volumes:
-    - ./:/app
-
 services:
   auth-dev:
+    volumes:
+      - ./auth:/app
     build:
       context: .
+      dockerfile: Dockerfile_auth
       target: development
       args:
         <<: *build_args
@@ -20,31 +19,53 @@ services:
     ports:
       - 127.0.0.1:80:5000/tcp
       - 4444:4444 # for debugging
-    <<: *default_volumes
     env_file:
-      - environments/env_dev.txt
+      - auth/environments/env_dev.txt
+    restart: always
+    stdin_open: true # for debugging
+    tty: true # for debugging
+
+  reverse-proxy-dev:
+    volumes:
+      - ./reverse_proxy:/app
+    build:
+      context: .
+      dockerfile: Dockerfile_reverse_proxy
+      target: development
+      args:
+        <<: *build_args
+    image: reverse-proxy:dev
+    container_name: reverse-proxy-dev
+    ports:
+      - 127.0.0.1:81:5000/tcp
+      - 4445:4444 # for debugging
+    env_file:
+      - reverse_proxy/environments/env_dev.txt
+    restart: always
     stdin_open: true # for debugging
     tty: true # for debugging
 
   oauth2-token-db-dev:
     image: postgres:10
     container_name: oauth2-token-db-dev
+    restart: always
     ports:
       - 5432:5432
     volumes:
       - ./oauth2-token-db-dev.postgresdb:/var/lib/postgresql/data
     env_file:
-      - environments/env_dev_db.txt
+      - auth/environments/env_dev_db.txt
 
   oauth2-token-db-test:
     image: postgres:10
     container_name: oauth2-token-db-test
+    restart: always
     ports:
       - 5433:5432
     volumes:
       - ./oauth2-token-db-test.postgresdb:/var/lib/postgresql/data
     env_file:
-      - environments/env_test_db.txt
+      - auth/environments/env_test_db.txt
 
   manage:
     build:
