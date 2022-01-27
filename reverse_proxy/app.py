@@ -31,7 +31,10 @@ def proxy(path):
         auth_header_arr = auth_header.split()
         access_token = auth_header_arr[-1]
 
-    if user_id and access_token:
+    if access_token:
+        token = OAuth2Token.find_by_access_token(db.session, access_token, user_id)
+
+    if user_id and token:
         initial_headers = {
                 'UID': request.headers.get('UID'),
                 'Content-Type': request.headers.get('Content-Type'),
@@ -40,7 +43,7 @@ def proxy(path):
 
         api_url = 'http://' + current_app.config['API_HOST'] + '/' + path
 
-        token = OAuth2Token.find_by_access_token(db.session, access_token, user_id)
+
         if request.method=='GET':
             resp = requests.get(api_url, headers=initial_headers)
             excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']

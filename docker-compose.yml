@@ -8,6 +8,8 @@ services:
   auth-dev:
     volumes:
       - ./auth:/app
+    networks:
+      - internal
     build:
       context: .
       dockerfile: Dockerfile_auth

@@ -101,17 +101,26 @@ def get_token():
     client_id = request.form.get('client_id')
     partner_id = request.form.get('partner_id')
     partner_secret_key = request.form.get('partner_secret_key')
-    user_id = request.form.get('user_id')
     register_user = request.form.get('register_user')
     full_name = request.form.get('full_name')
     address = request.form.get('address')
     phone = request.form.get('phone')
 
-    oauth2_token = OAuth2Token.query.filter(OAuth2Token.user_id == user_id,
-        OAuth2Token.auth_code == auth_code
-        ).one_or_none()
+    user_id = request.headers.get('UID')
+    auth_code = request.headers.get('auth_code')
 
-    return make_response(jsonify({
-                'access_token': oauth2_token.access_token,
-                'expire': (oauth2_token.issued_at + 3600)
-            }), 200)
+    if auth_code and user_id:
+        oauth2_token = OAuth2Token.query.filter(OAuth2Token.user_id == user_id,
+            OAuth2Token.auth_code == auth_code
+            ).one_or_none()
+
+    if oauth2_token:
+
+        return make_response(jsonify({
+                    'access_token': oauth2_token.access_token,
+                    'expire': (oauth2_token.issued_at + 3600)
+                }), 200)
+    else:
+        return make_response(jsonify({
+                'status': 'token not found'
+            }), 404)
