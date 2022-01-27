@@ -52,6 +52,7 @@ def login():
             oauth2_token.access_token = access_token
             oauth2_token.issued_at = dt.utcnow().timestamp()
             oauth2_token.expires_in = 3600
+            oauth2_token.scopes = partner.scopes
 
             db.session.add(oauth2_token)
             db.session.commit()
@@ -101,22 +102,37 @@ def allow_form():
 def get_token():
     auth_code = request.form.get('auth_code')
     client_id = request.form.get('client_id')
-    partner_id = request.form.get('partner_id')
-    partner_secret_key = request.form.get('partner_secret_key')
     register_user = request.form.get('register_user')
-    full_name = request.form.get('full_name')
+    fullname = request.form.get('fullname')
     address = request.form.get('address')
     phone = request.form.get('phone')
 
     user_id = request.headers.get('UID')
     auth_code = request.headers.get('auth_code')
+    partner_id = request.headers.get('partner_id')
+    partner_secret_key = request.headers.get('partner_secret_key')
 
-    if auth_code and user_id:
+    partner = Partner.query.filter(
+                Partner.id == partner_id,
+                Partner.secret_key == partner_secret_key
+                ).one_or_none()
+
+    if auth_code and user_id and partner:
         oauth2_token = OAuth2Token.query.filter(OAuth2Token.user_id == user_id,
-            OAuth2Token.auth_code == auth_code
+            OAuth2Token.auth_code == auth_code,
+            OAuth2Token.partner_id == partner_id
             ).one_or_none()
 
     if oauth2_token:
+
+        if register_user == '1':
+            user = oauth2_token.user
+            user.fullname = fullname
+            user.address = address
+            user.phone = phone
+
+            db.session.add(user)
+            db.session.commit()
 
         return make_response(jsonify({
                     'access_token': oauth2_token.access_token,
