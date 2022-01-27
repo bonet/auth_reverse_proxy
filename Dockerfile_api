@@ -9,7 +9,6 @@ RUN apt-get install -y \
     gcc
 
 WORKDIR /app
-COPY requirements requirements
 
 COPY . .
 
@@ -26,7 +25,7 @@ ENV URL_HOST=${URL_HOST}
 # ================================= DEVELOPMENT ================================
 FROM base AS development
 
-RUN pip install --user -r requirements.txt
+RUN pip install --user -r /app/api/requirements.txt
 EXPOSE 5000
 ENV SEND_FILE_MAX_AGE_DEFAULT=0
 ENV PAGINATION_NUMERIC_DISPLAY_COUNT=5

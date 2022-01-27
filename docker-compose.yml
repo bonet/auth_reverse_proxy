@@ -25,6 +25,7 @@ services:
     stdin_open: true # for debugging
     tty: true # for debugging
 
+
   reverse-proxy-dev:
     volumes:
       - ./reverse_proxy:/app
@@ -45,6 +46,28 @@ services:
     stdin_open: true # for debugging
     tty: true # for debugging
 
+
+  api-dev:
+    volumes:
+      - ./api:/app
+    build:
+      context: .
+      dockerfile: Dockerfile_api
+      target: development
+      args:
+        <<: *build_args
+    image: api:dev
+    container_name: api-dev
+    ports:
+      - 127.0.0.1:82:5000/tcp
+      - 4446:4444 # for debugging
+    env_file:
+      - api/environments/env_dev.txt
+    restart: always
+    stdin_open: true # for debugging
+    tty: true # for debugging
+
+
   oauth2-token-db-dev:
     image: postgres:10
     container_name: oauth2-token-db-dev
@@ -55,6 +78,7 @@ services:
       - ./oauth2-token-db-dev.postgresdb:/var/lib/postgresql/data
     env_file:
       - auth/environments/env_dev_db.txt
+
 
   oauth2-token-db-test:
     image: postgres:10
@@ -67,6 +91,7 @@ services:
     env_file:
       - auth/environments/env_test_db.txt
 
+
   manage:
     build:
       context: .
@@ -77,6 +102,7 @@ services:
     image: sims-manage
     stdin_open: true
     tty: true
+
 
 volumes:
   node-modules:
