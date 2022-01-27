@@ -70,9 +70,13 @@ We only need to access the address of this API's related Proxy Server
 1. `COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build products-api-dev`
 2. `docker-compose up products-api-dev`
 
+Address for this service: internal
+
 ##### Orders API Service
 1. `COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build orders-api-dev`
 2. `docker-compose up orders-api-dev`
+
+Address for this service: internal
 
 
 
@@ -84,13 +88,17 @@ its corresponding API.
 1. `COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build products-reverse-proxy-dev`
 2. `docker-compose up products-reverse-proxy-dev`
 
-Address for this service is 0.0.0.0:1001
+Address for this service is `0.0.0.0:1001`. To call Products API Service, would need to make a request to this endpoint
+
 
 ##### Orders API Reverse Proxy
 1. `COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build orders-reverse-proxy-dev`
 2. `docker-compose up orders-reverse-proxy-dev`
 
-Address for this service is 0.0.0.0:1002
+Address for this service is `0.0.0.0:1002`. To call Orders API Service, would need to make a request to this endpoint
+
+
+## Documents
 
 Documents for this architecture can be found [here](./docs)
 

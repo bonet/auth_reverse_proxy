@@ -96,7 +96,6 @@ def allow_form():
 # Partner server will be whitelisted on our backend server address
 @app.route('/api/v1/get_token',methods=['POST'])
 def get_token():
-    auth_code = request.form.get('auth_code')
     client_id = request.form.get('client_id')
     register_user = request.form.get('register_user')
     fullname = request.form.get('fullname')

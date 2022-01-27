@@ -1,0 +1,402 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ReverseProxy OAuth2 Test",
+		"_postman_id": "4f59a9b0-22f0-8bf0-7119-975014b042b0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OAuth2 Login Flow",
+			"description": "",
+			"item": [
+				{
+					"name": "1. GET Login Form",
+					"request": {
+						"url": {
+							"raw": "http://0.0.0.0/api/v1/auth?callback_url=http://x.com/callback&client_access_token=555555555&partner_id=1",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth"
+							],
+							"query": [
+								{
+									"key": "callback_url",
+									"value": "http://x.com/callback",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "client_access_token",
+									"value": "555555555",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "partner_id",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/html",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": [
+						{
+							"id": "99f8800f-fdb4-46cb-b52c-ae28e3876701",
+							"name": "1. GET Login Form",
+							"originalRequest": {
+								"url": {
+									"raw": "http://0.0.0.0/api/v1/auth?callback_url=http://x.com/callback&client_access_token=555555555&partner_id=1",
+									"protocol": "http",
+									"host": [
+										"0",
+										"0",
+										"0",
+										"0"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth"
+									],
+									"query": [
+										{
+											"key": "callback_url",
+											"value": "http://x.com/callback",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "client_access_token",
+											"value": "555555555",
+											"equals": true,
+											"description": ""
+										},
+										{
+											"key": "partner_id",
+											"value": "1",
+											"equals": true,
+											"description": ""
+										}
+									],
+									"variable": []
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/html",
+										"description": "",
+										"warning": ""
+									}
+								],
+								"body": {}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "html",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"name": "content-length",
+									"key": "content-length",
+									"value": "605",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"name": "content-type",
+									"key": "content-type",
+									"value": "text/html; charset=utf-8",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "date",
+									"key": "date",
+									"value": "Wed, 26 Jan 2022 16:31:48 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "server",
+									"key": "server",
+									"value": "Werkzeug/0.16.0 Python/3.7.12",
+									"description": "A name for the server"
+								}
+							],
+							"cookie": [],
+							"responseTime": 33,
+							"body": "<form action=\"/api/v1/auth?callback_url=http://x.com/callback&client_access_token=555555555&partner_id=1\" method=\"post\">\n  <table style=\"width: 200px\">\n    <tr>\n      <td>Email:</td>\n      <td><input type=\"text\" name=\"email\" /></td>\n    </tr>\n    <tr>\n      <td>Password:</td>\n      <td><input type=\"text\" name=\"password\" /></td>\n    </tr>\n  </table>\n  <br>\n  <input type=\"hidden\" name=\"partner_id\" value=\"1\" />\n  <input type=\"hidden\" name=\"client_access_token\" value=\"555555555\" />\n  <input type=\"hidden\" name=\"callback_url\" value=\"http://x.com/callback\" />\n  <input type=\"submit\" value=\"Login\"/>\n</form>"
+						}
+					]
+				},
+				{
+					"name": "2. POST login form",
+					"request": {
+						"url": {
+							"raw": "http://0.0.0.0/api/v1/auth?callback_url=http://x.com/callback&client_access_token=555555555&partner_id=1",
+							"protocol": "http",
+							"host": [
+								"0",
+								"0",
+								"0",
+								"0"
+							],
+							"path": [
+								"api",
+								"v1",
+								"auth"
+							],
+							"query": [
+								{
+									"key": "callback_url",
+									"value": "http://x.com/callback",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "client_access_token",
+									"value": "555555555",
+									"equals": true,
+									"description": ""
+								},
+								{
+									"key": "partner_id",
+									"value": "1",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "callback_url",
+									"value": "http://x.com/callback",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "client_access_token",
+									"value": "555555555",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "partner_id",
+									"value": "1\n",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "111@test.com",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "3. REDIRECT to Allow Form",
+					"request": {
+						"url": "http://0.0.0.0/form/v1/allow_form",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "4. POST get_token to get access_token",
+					"request": {
+						"url": "http://0.0.0.0/api/v1/get_token",
+						"method": "POST",
+						"header": [
+							{
+								"key": "UID",
+								"value": "1",
+								"description": ""
+							},
+							{
+								"key": "auth_code",
+								"value": "F37527115aC4b7532b0B73eAEa65a0aA",
+								"description": ""
+							},
+							{
+								"key": "partner_id",
+								"value": "1",
+								"description": ""
+							},
+							{
+								"key": "partner_secret_key",
+								"value": "XYZ",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "auth_code",
+									"value": "F37527115aC4b7532b0B73eAEa65a0aA",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "register_user",
+									"value": "1",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "John Doe",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "123 Test St",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "888-8888888",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": [
+						{
+							"id": "bbc8b838-56fd-4459-b154-e9df10a57b56",
+							"name": "4. POST get_token to get access_token",
+							"originalRequest": {
+								"url": "http://0.0.0.0/api/v1/get_token",
+								"method": "POST",
+								"header": [
+									{
+										"key": "UID",
+										"value": "1",
+										"description": "",
+										"warning": ""
+									},
+									{
+										"key": "auth_code",
+										"value": "88c1cbF24B5629Ae69EE435501790224",
+										"description": "",
+										"warning": ""
+									}
+								],
+								"body": {}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"_postman_previewtype": "text",
+							"header": [
+								{
+									"name": "content-length",
+									"key": "content-length",
+									"value": "82",
+									"description": "The length of the response body in octets (8-bit bytes)"
+								},
+								{
+									"name": "content-type",
+									"key": "content-type",
+									"value": "application/json",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "date",
+									"key": "date",
+									"value": "Thu, 27 Jan 2022 08:11:22 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "server",
+									"key": "server",
+									"value": "Werkzeug/0.16.0 Python/3.7.12",
+									"description": "A name for the server"
+								}
+							],
+							"cookie": [],
+							"responseTime": 106,
+							"body": "{\n  \"access_token\": \"8cF9E3d1f8CAD43572e28dAbEFBd4986\", \n  \"expire\": 1643274121\n}\n"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Reverse Proxy Test",
+			"description": "",
+			"item": [
+				{
+					"name": "GET Products Through Proxy",
+					"request": {
+						"url": "http://0.0.0.0:1001/api/v1/lists",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer C01fef5192aC599EE4EccEE33Ff5f41a",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "UID",
+								"value": "1",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
