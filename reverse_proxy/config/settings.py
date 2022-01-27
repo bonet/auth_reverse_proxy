@@ -13,7 +13,8 @@ env.read_env()
 
 ENV = env.str("FLASK_ENV", default="production")
 DEBUG = ENV == "development"
-SERVER_NAME = "0.0.0.0:81"
+SERVER_NAME = env.str("URL_HOST")
 SQLALCHEMY_DATABASE_URI = env.str("DATABASE_URL")
 FLASK_APP = env.str("FLASK_APP")
+API_HOST = env.str("API_HOST")
 SQLALCHEMY_TRACK_MODIFICATIONS = True

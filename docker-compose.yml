@@ -26,7 +26,7 @@ services:
     tty: true # for debugging
 
 
-  reverse-proxy-dev:
+  products-reverse-proxy-dev:
     volumes:
       - ./reverse_proxy:/app
     build:
@@ -36,18 +36,45 @@ services:
       args:
         <<: *build_args
     image: reverse-proxy:dev
-    container_name: reverse-proxy-dev
+    container_name: products-reverse-proxy-dev
     ports:
-      - 127.0.0.1:81:5000/tcp
-      - 4445:4444 # for debugging
+      - 127.0.0.1:1001:5000/tcp
+      - 4401:4444 # for debugging
     env_file:
       - reverse_proxy/environments/env_dev.txt
     restart: always
     stdin_open: true # for debugging
     tty: true # for debugging
+    environment:
+      - API_HOST=products-api-dev
+      - URL_HOST=0.0.0.0:1001
 
 
-  api-dev:
+  orders-reverse-proxy-dev:
+    volumes:
+      - ./reverse_proxy:/app
+    build:
+      context: .
+      dockerfile: Dockerfile_reverse_proxy
+      target: development
+      args:
+        <<: *build_args
+    image: reverse-proxy:dev
+    container_name: orders-reverse-proxy-dev
+    ports:
+      - 127.0.0.1:1002:5000/tcp
+      - 4402:4444 # for debugging
+    env_file:
+      - reverse_proxy/environments/env_dev.txt
+    restart: always
+    stdin_open: true # for debugging
+    tty: true # for debugging
+    environment:
+      - API_HOST=orders-api-dev
+      - URL_HOST=0.0.0.0:1002
+
+
+  products-api-dev:
     volumes:
       - ./api:/app
     build:
@@ -57,15 +84,40 @@ services:
       args:
         <<: *build_args
     image: api:dev
-    container_name: api-dev
+    container_name: products-api-dev
     ports:
-      - 127.0.0.1:82:5000/tcp
-      - 4446:4444 # for debugging
+      - 127.0.0.1:2001:5000/tcp
+      - 4411:4444 # for debugging
     env_file:
       - api/environments/env_dev.txt
     restart: always
     stdin_open: true # for debugging
     tty: true # for debugging
+    environment:
+      - URL_HOST=0.0.0.0:2001
+
+
+  orders-api-dev:
+    volumes:
+      - ./api:/app
+    build:
+      context: .
+      dockerfile: Dockerfile_api
+      target: development
+      args:
+        <<: *build_args
+    image: api:dev
+    container_name: orders-api-dev
+    ports:
+      - 127.0.0.1:2002:5000/tcp
+      - 4422:4444 # for debugging
+    env_file:
+      - api/environments/env_dev.txt
+    restart: always
+    stdin_open: true # for debugging
+    tty: true # for debugging
+    environment:
+      - URL_HOST=0.0.0.0:2002
 
 
   oauth2-token-db-dev:
@@ -91,18 +143,3 @@ services:
     env_file:
       - auth/environments/env_test_db.txt
 
-
-  manage:
-    build:
-      context: .
-      target: manage
-    environment:
-      FLASK_ENV: production
-      FLASK_DEBUG: 0
-    image: sims-manage
-    stdin_open: true
-    tty: true
-
-
-volumes:
-  node-modules:

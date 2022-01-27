@@ -13,5 +13,5 @@ env.read_env()
 
 ENV = env.str("FLASK_ENV", default="production")
 DEBUG = ENV == "development"
-SERVER_NAME = "0.0.0.0:82"
+SERVER_NAME = env.str("URL_HOST")
 FLASK_APP = env.str("FLASK_APP")
