@@ -9,6 +9,8 @@ from libs.database import (
     relationship,
 )
 
+from libs.extensions import bcrypt
+
 class User(SurrogatePK, Model):
     """A Company has many users"""
 
@@ -24,7 +26,19 @@ class User(SurrogatePK, Model):
     updated_at = Column(db.DateTime, nullable=True, default=dt.datetime.utcnow, onupdate=dt.datetime.utcnow)
 
 
-    def __init__(self, **kwargs):
+    def __init__(self, email, password=None, **kwargs):
         """Create instance."""
-        db.Model.__init__(self, **kwargs)
+        db.Model.__init__(self, email=email, password=password, **kwargs)
+        if password:
+            self.set_password(password)
+        else:
+            self.password = None
+
+    def set_password(self, password):
+        """Set password."""
+        self.password = bcrypt.generate_password_hash(password)
+
+    def check_password(self, value):
+        """Check password."""
+        return bcrypt.check_password_hash(self.password, value)
 
