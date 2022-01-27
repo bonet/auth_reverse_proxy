@@ -2,10 +2,10 @@
 
 In microservice architecture, API authentication and authorization are best done
 through a separate standalone server. This is for scalability purpose and to
-simplify the multi-level complexities
+simplify the multi-level complexities.
 
 A good solution is to build a reverse-proxy which every API requests (excluding login)
-must pass before being able to connect to the API destination.
+must go through before being able to reach the intended API.
 
 This way, each API microservice doesn't need to care about the authorization. We can
 set the authorization rule on the reverse-proxy so that it can remove unwanted
@@ -20,7 +20,7 @@ quite robust and relatively easy to setup.
 To simulate the authentication and authorisation scenario, there are 3 main directories
 in the source code:
 1. `/api` is where mock API server codes are located
-2. `/auth` is where login and authentication-related process happens
+2. `/auth` is where login and authentication-related process happens. This example is using OAuth2 Authorization Code flow to generate Access Token
 3. `/reverse_proxy` is the frontline reverse_proxy server code base
 
 Below is the architecture diagram:
@@ -29,6 +29,23 @@ Below is the architecture diagram:
 
 Each of the 3 directories is a Flask server running in a standalone Docker container.
 
+The REST API controller codes can be found here:
+- /api/app.py
+- /auth/app.py
+- /reverse_proxy/app.py
+
+## API Authorization Flow from a 3rd Party (Partner) Site
+Note that the authentication and authorization flow is using OAuth2 authorization code flow.
+
+1. First, user in a 3rd party (a Partner) site must login to our system by calling our /auth API
+2. After logging in, an OAuth2Token that contains unique auth_code and access_token is created
+3. The generated OAuth2Token also contains the permission scopes unique for that user. The scopes are copied from user's Partner scopes
+4. When user is calling our API, the endpoints will be a Reverse Proxy endpoint
+5. User makes an API request to the Reverse Proxy with Access Token embedded in the HTTP Authorization header
+6. The Reverse Proxy will check whether the owner of the access_token match with the API requestor
+7. If match and API is included in the access_token scopes, then Reverse Proxy will forward the requests to the intended API endpoint
+8. When receiving the response, Reverse Proxy will forward it back to the user
+9. If access_token doesn't match or API is not within the access_token scopes, Reverse Proxy will return Error back to the user without forwarding the request to the API endpoint
 
 ## How to Setup
 
@@ -76,3 +93,10 @@ Address for this service is 0.0.0.0:1001
 Address for this service is 0.0.0.0:1002
 
 Documents for this architecture can be found [here](./docs)
+
+
+## How to Test
+1. Run the `auth-dev` container (look at 1. Auth Service)
+2. Run the test database container: `docker-compose up oauth2-token-db-test`
+3. Run the test: `docker exec -it auth-dev pytest -v tests/`
+
