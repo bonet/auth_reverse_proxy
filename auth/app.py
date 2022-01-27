@@ -29,14 +29,16 @@ def login():
         client_access_token=request.form.get('client_access_token')
         partner_id=request.form.get('partner_id')
 
-        user = User.query.filter(
-            User.email==request.form.get('email'),
-            User.password==request.form.get('password').encode('ascii')
-            ).one_or_none()
+        if request.form.get('password') and request.form.get('password'):
+            user = User.query.filter(
+                User.email==request.form.get('email'),
+                User.password==request.form.get('password').encode('ascii')
+                ).one_or_none()
 
-        partner = Partner.query.filter(
-            Partner.id==partner_id
-            ).one_or_none()
+        if partner_id:
+            partner = Partner.query.filter(
+                Partner.id==partner_id
+                ).one_or_none()
 
         if(user and partner):
             auth_code = ''.join(random.SystemRandom().choice(string.hexdigits) for _ in range(32))
