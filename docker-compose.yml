@@ -18,6 +18,8 @@ services:
         <<: *build_args
     image: auth:dev
     container_name: auth-dev
+    depends_on:
+      - oauth2-token-db-dev
     ports:
       - 127.0.0.1:80:5000/tcp
       - 4444:4444 # for debugging
@@ -142,6 +144,31 @@ services:
       - ./oauth2-token-db-dev.postgresdb:/var/lib/postgresql/data
     env_file:
       - auth/environments/env_dev_db.txt
+
+
+  auth-test:
+    volumes:
+      - ./auth:/app
+    networks:
+      - internal
+    build:
+      context: .
+      dockerfile: Dockerfile_auth
+      target: development
+      args:
+        <<: *build_args
+    image: auth:dev
+    container_name: auth-test
+    depends_on:
+      - oauth2-token-db-test
+    ports:
+      - 127.0.0.1:79:5000/tcp
+      - 4434:4444 # for debugging
+    env_file:
+      - auth/environments/env_test.txt
+    restart: always
+    stdin_open: true # for debugging
+    tty: true # for debugging
 
 
   oauth2-token-db-test:
